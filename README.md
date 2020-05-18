@@ -10,15 +10,15 @@ Finish time: _4:15____
 
 Actual time needed to complete: __1 hour___
 
-Number and name of feature: ________________________________
+Number and name of feature: __Google Books API______________________________
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: __1 hour___
 
-Start time: _____
+Start time: __4:30___
 
-Finish time: _____
+Finish time: __4:45___
 
-Actual time needed to complete: _____
+Actual time needed to complete: __15 mins___
 
 Number and name of feature: ________________________________
 
