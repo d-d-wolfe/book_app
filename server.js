@@ -15,7 +15,7 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 
-app.get('/hello', (req, res) => {
+app.get('/', (req, res) => {
   res.render('pages/index.ejs');
 });
 
@@ -26,6 +26,10 @@ app.get('/searches/new', (req, res) => {
 app.get('/searches/show', (req, res) =>{
   res.render('pages/searches/show.ejs');
 });
+
+app.get('/pages/error', (req, res) =>{
+  res.render('pages/error.ejs')
+})
 
 app.post('/searches/new', searchNewBook);
 //app.post('/searches/show', newBook);
@@ -55,7 +59,8 @@ function searchNewBook(req, res) {
       res.render('pages/searches/show', {'newBook': newBook});
     })
     .catch(error => {
-      res.send(error);
+      res.render('pages/error', {'error': error});
+      console.error('error from Google books API', error);
     });
 
 }
@@ -63,10 +68,16 @@ function searchNewBook(req, res) {
 // when we select title or author and we combine it with whatever the search string is in the text input, our URL that we get back is going to = request.body.search[0].
 
 function Book(obj) {
-  this.image = obj.image ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
   this.title = obj.title ? obj.title : 'Book Title';
   this.author = obj.authors ? obj.authors : 'Author';
   this.description = obj.description ? obj.description : 'lorem ipsum...';
+
+  if (obj.imageLinks.thumbnail) {
+    if (obj.imageLinks.thumbnail[4] === ':') {
+      obj.imageLinks.thumbnail = obj.imageLinks.thumbnail.split(':').join('s:');
+    }
+  }
+  this.image = obj.imageLinks.thumbnail ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
 }
 
 
