@@ -2,18 +2,23 @@
 
 const express = require('express');
 const superagent = require('superagent');
+const pg = require('pg');
 require('dotenv').config();
 
 //app setup (global variables)
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// handlers
+// pg
+
 
 // configs/middleware
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', console.error);
+client.connect()
 
 app.get('/hello', (req, res) => {
   res.render('pages/index.ejs');
