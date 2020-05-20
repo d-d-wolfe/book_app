@@ -70,8 +70,6 @@ function searchNewBook(req, res) {
 
 }
 
-// when we select title or author and we combine it with whatever the search string is in the text input, our URL that we get back is going to = request.body.search[0].
-
 function Book(obj) {
   this.title = obj.title ? obj.title : 'Book Title';
   this.author = obj.authors ? obj.authors : 'Author';
@@ -83,6 +81,7 @@ function Book(obj) {
     }
   }
   this.image = obj.imageLinks.thumbnail ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
+  this.isbn = obj.industryIdentifiers[1] ? obj.industryIdentifiers[1].identifier :'ISBN UNAVAILABLE';
 }
 
 
