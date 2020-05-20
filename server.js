@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 const client = new pg.Client(process.env.DATABASE_URL);
 client.on('error', console.error);
-client.connect()
+client.connect();
 
 app.get('/', (req, res) => {
   res.render('pages/index.ejs');
@@ -28,13 +28,15 @@ app.get('/searches/new', (req, res) => {
   res.render('pages/searches/new.ejs');
 });
 
-app.get('/searches/show', (req, res) =>{
+app.get('/searches/show', (req, res) => {
   res.render('pages/searches/show.ejs');
 });
 
-app.get('/pages/error', (req, res) =>{
+app.get('/', getBooksFromDB);
+
+app.get('/pages/error', (req, res) => {
   res.render('pages/error.ejs')
-})
+});
 
 app.post('/searches/new', searchNewBook);
 //app.post('/searches/show', newBook);
@@ -61,10 +63,10 @@ function searchNewBook(req, res) {
         return new Book(value.volumeInfo);
       });
       //res.send(newBook);
-      res.render('pages/searches/show', {'newBook': newBook});
+      res.render('pages/searches/show', { 'newBook': newBook });
     })
     .catch(error => {
-      res.render('pages/error', {'error': error});
+      res.render('pages/error', { 'error': error });
       console.error('error from Google books API', error);
     });
 
@@ -81,7 +83,26 @@ function Book(obj) {
     }
   }
   this.image = obj.imageLinks ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
-  this.isbn = obj.industryIdentifiers[1] ? obj.industryIdentifiers[1].identifier :'ISBN UNAVAILABLE';
+  this.isbn = obj.industryIdentifiers[1] ? obj.industryIdentifiers[1].identifier : 'ISBN UNAVAILABLE';
+}
+
+function getBooksFromDB(req, res) {
+  const sqlQuery = 'SELECT * FROM booktable';
+  client.query(sqlQuery)
+    .then(resultFromSql => {
+      res.render('pages/index', { 'booksFromDB': resultFromSql.rows });
+      console.log(resultFromSql.rows);
+      // if (resultFromSql.rowCount > 0) {
+      //   console.log(resultFromSql.rows);
+      //   res.render('pages/index', { 'booksFromDB': resultFromSql.rows });
+      // } else {
+      //   res.render('pages/searches/new');
+      // }
+    })
+    .catch(error => {
+      res.render('pages/error', { 'error': error });
+      console.error('error getting books from DB: ', error);
+    });
 }
 
 
