@@ -20,10 +20,6 @@ const client = new pg.Client(process.env.DATABASE_URL);
 client.on('error', console.error);
 client.connect();
 
-app.get('/', (req, res) => {
-  res.render('pages/index.ejs');
-});
-
 app.get('/searches/new', (req, res) => {
   res.render('pages/searches/new.ejs');
 });
@@ -35,14 +31,14 @@ app.get('/searches/show', (req, res) => {
 app.get('/', getBooksFromDB);
 
 app.get('/pages/error', (req, res) => {
-  res.render('pages/error.ejs')
+  res.render('pages/error.ejs');
 });
 
 app.post('/searches/new', searchNewBook);
 //app.post('/searches/show', newBook);
 
 function searchNewBook(req, res) {
-  const url = 'https://www.googleapis.com/books/v1/volumes';
+  const url = 'https://www.googleapis.com/books/v1/volumes?';
   //console.log(req.body.search);
   const { keyword, type } = req.body.search;
   let q = '';
@@ -83,21 +79,20 @@ function Book(obj) {
     }
   }
   this.image = obj.imageLinks ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
-  this.isbn = obj.industryIdentifiers[1] ? obj.industryIdentifiers[1].identifier : 'ISBN UNAVAILABLE';
+  this.isbn = obj.industryIdentifiers && obj.industryIdentifiers[1] ? obj.industryIdentifiers[1].identifier : 'ISBN UNAVAILABLE';
 }
 
 function getBooksFromDB(req, res) {
   const sqlQuery = 'SELECT * FROM booktable';
   client.query(sqlQuery)
     .then(resultFromSql => {
-      res.render('pages/index', { 'booksFromDB': resultFromSql.rows });
       console.log(resultFromSql.rows);
-      // if (resultFromSql.rowCount > 0) {
-      //   console.log(resultFromSql.rows);
-      //   res.render('pages/index', { 'booksFromDB': resultFromSql.rows });
-      // } else {
-      //   res.render('pages/searches/new');
-      // }
+      if (resultFromSql.rowCount > 0) {
+        console.log(resultFromSql.rows);
+        res.render('pages/index', { 'booksFromDB': resultFromSql.rows }); //booksFromDB
+      } else {
+        res.render('pages/searches/new');
+      }
     })
     .catch(error => {
       res.render('pages/error', { 'error': error });
@@ -105,7 +100,7 @@ function getBooksFromDB(req, res) {
     });
 }
 
-
+// INSERT into DB
 
 
 
