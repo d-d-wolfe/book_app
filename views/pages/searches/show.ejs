@@ -10,7 +10,7 @@
     <% newBook.forEach(value =>{ %>
       <li><h2><%= value.title %></h2>
           <h3><%= value.author %></h3>
-          <h1><%= value.isbn %></h1>
+          <h1>ISBN: <%= value.isbn %></h1>
           <p><%= value.description %></p>
           <img src=<%= value.image %> alt="">
       </li>

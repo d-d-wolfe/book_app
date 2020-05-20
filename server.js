@@ -75,12 +75,12 @@ function Book(obj) {
   this.author = obj.authors ? obj.authors : 'Author';
   this.description = obj.description ? obj.description : 'lorem ipsum...';
 
-  if (obj.imageLinks.thumbnail) {
+  if (obj.imageLinks) {
     if (obj.imageLinks.thumbnail[4] === ':') {
       obj.imageLinks.thumbnail = obj.imageLinks.thumbnail.split(':').join('s:');
     }
   }
-  this.image = obj.imageLinks.thumbnail ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
+  this.image = obj.imageLinks ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
   this.isbn = obj.industryIdentifiers[1] ? obj.industryIdentifiers[1].identifier :'ISBN UNAVAILABLE';
 }
 
