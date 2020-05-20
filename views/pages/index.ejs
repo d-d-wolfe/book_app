@@ -11,6 +11,30 @@
   <link rel="stylesheet" href="/styles/modules.css">
  </head>
 <body>
-  <h1>Hello World</h1>
+  <h1>Open Shelf</h1>
+
+  <table>
+    <thead>
+      <th>ID</th>
+      <th>Author</th>
+      <th>Title</th>
+      <th>ISBN</th>
+      <th>image_url</th>
+      <th>Description</th>
+      <th>Bookshelf</th>
+    </thead>
+    <tbody>
+      <% for(let i = 0; i < booksFromDB.length; i++) { %>
+      <tr>
+        <td><%= booksFromDB[i].author %></td>
+        <td><%= booksFromDB[i].title %></td>
+        <td><%= booksFromDB[i].isbn %></td>
+        <td><%= booksFromDB[i].image_url %></td>
+        <td><%= booksFromDB[i].description %></td>
+        <td><%= booksFromDB[i].bookshelf %></td>
+     </tr>
+      <% } %>
+    </tbody>  
+  </table>
 </body>
 </html>
