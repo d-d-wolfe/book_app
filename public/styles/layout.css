@@ -1,0 +1,8 @@
+/* Table layout*/
+table {
+  outline: 1px black solid;
+}
+
+th, td {
+  outline: 1px black solid;
+}
