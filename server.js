@@ -2,18 +2,23 @@
 
 const express = require('express');
 const superagent = require('superagent');
+const pg = require('pg');
 require('dotenv').config();
 
 //app setup (global variables)
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// handlers
+// pg
+
 
 // configs/middleware
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', console.error);
+client.connect()
 
 app.get('/', (req, res) => {
   res.render('pages/index.ejs');
@@ -65,19 +70,18 @@ function searchNewBook(req, res) {
 
 }
 
-// when we select title or author and we combine it with whatever the search string is in the text input, our URL that we get back is going to = request.body.search[0].
-
 function Book(obj) {
   this.title = obj.title ? obj.title : 'Book Title';
   this.author = obj.authors ? obj.authors : 'Author';
   this.description = obj.description ? obj.description : 'lorem ipsum...';
 
-  if (obj.imageLinks.thumbnail) {
+  if (obj.imageLinks) {
     if (obj.imageLinks.thumbnail[4] === ':') {
       obj.imageLinks.thumbnail = obj.imageLinks.thumbnail.split(':').join('s:');
     }
   }
-  this.image = obj.imageLinks.thumbnail ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
+  this.image = obj.imageLinks ? obj.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
+  this.isbn = obj.industryIdentifiers[1] ? obj.industryIdentifiers[1].identifier :'ISBN UNAVAILABLE';
 }
 
 
