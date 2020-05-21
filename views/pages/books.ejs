@@ -6,6 +6,17 @@
   <title>Books</title>
 </head>
 <body>
-  
+  <h3><%= bookInfo.author %></h3>
+          <h1>ISBN: <%= bookInfo.isbn %></h1>
+          <p><%= bookInfo.description %></p>
+          <img src=<%= bookInfo.image_url %> alt="">
+          <form action="/books" method="POST">
+            <input class="save" type="hidden" name="title" value="<%= bookInfo.title %>"/>
+            <input class="save" type="hidden" name="author" value="<%= bookInfo.author %>"/>
+            <input class="save" type="hidden" name="isbn" value="<%= bookInfo.isbn %>"/>
+            <input class="save" type="hidden" name="description" value="<%= bookInfo.description %>"/>
+            <input class="save" type="hidden" name="image_url" value="<%= bookInfo.image %>"/>
+            <input type="submit" value="Save this Book"/>
+          </form>
 </body>
 </html>

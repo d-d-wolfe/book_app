@@ -30,7 +30,7 @@ app.get('/searches/show', (req, res) => {
 
 app.get('/', getBooksFromDB);
 
-app.post('/pages/books', bookToDB);
+app.post('/books', bookToDB);
 
 app.get('/pages/error', (req, res) => {
   res.render('pages/error.ejs');
@@ -111,10 +111,10 @@ function bookToDB(req, res) {
       res.render('pages/error', { 'error': error });
       console.error('error getting books from DB: ', error);
     });
-  console.log(req.body);
 }
 
-
+// create form that is hidden
+// render the new page with the db table, once the button is clicked
 
 
 // start the app

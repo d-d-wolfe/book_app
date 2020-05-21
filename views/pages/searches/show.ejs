@@ -13,7 +13,14 @@
           <h1>ISBN: <%= value.isbn %></h1>
           <p><%= value.description %></p>
           <img src=<%= value.image %> alt="">
-          <button>Save this Book</button>
+          <form action="/books" method="POST">
+            <input class="save" type="hidden" name="title" value="<%= value.title %>"/>
+            <input class="save" type="hidden" name="author" value="<%= value.author %>"/>
+            <input class="save" type="hidden" name="isbn" value="<%= value.isbn %>"/>
+            <input class="save" type="hidden" name="description" value="<%= value.description %>"/>
+            <input class="save" type="hidden" name="image_url" value="<%= value.image %>"/>
+            <input type="submit" value="Save this Book"/>
+          </form>
       </li>
     <% }) %>
   </ul>

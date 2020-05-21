@@ -11,9 +11,9 @@
   <link rel="stylesheet" href="/styles/modules.css">
  </head>
 <body>
+  <a href="searches/new">Search</a>
   <h1>Open Shelf</h1>
   <h1>You have <%= booksFromDB.length %> books in your library</h1>
-
   <table>
     <thead>
       <th>Author</th>
@@ -29,7 +29,7 @@
         <td><%= booksFromDB[i].author %></td>
         <td><%= booksFromDB[i].title %></td>
         <td><%= booksFromDB[i].isbn %></td>
-        <td><%= booksFromDB[i].image_url %></td>
+        <td><img src="<%= booksFromDB[i].image_url %>"/></td>
         <td><%= booksFromDB[i].description %></td>
         <td><%= booksFromDB[i].bookshelf %></td>
      </tr>
