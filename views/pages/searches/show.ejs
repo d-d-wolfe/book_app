@@ -7,12 +7,13 @@
 </head>
 <body>
   <ul>
-    <% newBook.forEach(value =>{ %>
-      <li><h2><%= value.title %></h2>
+    <% newBook.forEach((value, index) =>{ %>
+      <li key=<%= index %></li><h2><%= value.title %></h2>
           <h3><%= value.author %></h3>
           <h1>ISBN: <%= value.isbn %></h1>
           <p><%= value.description %></p>
           <img src=<%= value.image %> alt="">
+          <button>Save this Book</button>
       </li>
     <% }) %>
   </ul>

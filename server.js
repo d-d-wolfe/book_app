@@ -30,6 +30,8 @@ app.get('/searches/show', (req, res) => {
 
 app.get('/', getBooksFromDB);
 
+app.post('/pages/books', bookToDB);
+
 app.get('/pages/error', (req, res) => {
   res.render('pages/error.ejs');
 });
@@ -58,7 +60,6 @@ function searchNewBook(req, res) {
       const newBook = resultFromApi.map(value => {
         return new Book(value.volumeInfo);
       });
-      //res.send(newBook);
       res.render('pages/searches/show', { 'newBook': newBook });
     })
     .catch(error => {
@@ -104,7 +105,7 @@ function bookToDB(req, res) {
   const bookInfo = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookshelf];
   client.query(saveToSql, bookInfo)
     .then (
-      res.render('pages/show', {'bookInfo': req.body})
+      res.render('pages/books', {'bookInfo': req.body})
     )
     .catch(error => {
       res.render('pages/error', { 'error': error });
