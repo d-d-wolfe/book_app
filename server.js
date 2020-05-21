@@ -86,9 +86,7 @@ function getBooksFromDB(req, res) {
   const sqlQuery = 'SELECT * FROM booktable';
   client.query(sqlQuery)
     .then(resultFromSql => {
-      console.log(resultFromSql.rows);
       if (resultFromSql.rowCount > 0) {
-        console.log(resultFromSql.rows);
         res.render('pages/index', { 'booksFromDB': resultFromSql.rows }); //booksFromDB
       } else {
         res.render('pages/searches/new');
@@ -100,7 +98,21 @@ function getBooksFromDB(req, res) {
     });
 }
 
-// INSERT into DB
+function bookToDB(req, res) {
+  const saveToSql = 'INSERT INTO booktable (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6)';
+  // array with info from req.body
+  const bookInfo = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookshelf];
+  client.query(saveToSql, bookInfo)
+    .then (
+      res.render('pages/show', {'bookInfo': req.body})
+    )
+    .catch(error => {
+      res.render('pages/error', { 'error': error });
+      console.error('error getting books from DB: ', error);
+    });
+  console.log(req.body);
+}
+
 
 
 
