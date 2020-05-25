@@ -32,6 +32,8 @@ app.get('/', getBooksFromDB);
 
 app.post('/books', bookToDB);
 
+app.get('/books/:id', bookView);
+
 app.get('/pages/error', (req, res) => {
   res.render('pages/error.ejs');
 });
@@ -104,17 +106,23 @@ function bookToDB(req, res) {
   // array with info from req.body
   const bookInfo = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookshelf];
   client.query(saveToSql, bookInfo)
-    .then (
-      res.render('pages/books', {'bookInfo': req.body})
-    )
+  client.query('SELECT * FROM booktable WHERE isbn=$1', [req.body.isbn])
+    .then(resultFromSql =>{
+      res.redirect(`/books/${resultFromSql.rows[0].id}`);
+
+    })
     .catch(error => {
       res.render('pages/error', { 'error': error });
       console.error('error getting books from DB: ', error);
     });
 }
 
-// create form that is hidden
-// render the new page with the db table, once the button is clicked
+function bookView(req, res) {
+  client.query('SELECT * FROM booktable WHERE id=$1', [req.params.id])
+    .then(resultFromSql => {
+      res.render('pages/books/show', {bookInfo: resultFromSql.rows[0]});
+    });
+}
 
 
 // start the app
