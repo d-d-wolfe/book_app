@@ -32,6 +32,9 @@
         <td><img src="<%= booksFromDB[i].image_url %>"/></td>
         <td><%= booksFromDB[i].description %></td>
         <td><%= booksFromDB[i].bookshelf %></td>
+        <td>
+          <a href="/books/<%= booksFromDB[i].id %>">Details</a>
+        </td>
      </tr>
       <% } %>
     </tbody>  

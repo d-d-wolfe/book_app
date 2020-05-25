@@ -13,5 +13,25 @@
           <img src=<%= bookInfo.image_url %> alt="">
           <p><%= bookInfo.description %></p>
           <p><%= bookInfo.bookshelf %></p>
+  <form action="<%= bookInfo.id %>/update?_overrideMethod=PUT" method="POST">
+    <label for="title">Title</label>
+    <input class="save" type="text" name="title" value="<%= bookInfo.title %>"/>
+
+    <label for="author">Author</label>
+    <input class="save" type="text" name="author" value="<%= bookInfo.author %>"/>
+
+    <label for="isbn">ISBN</label>
+    <input class="save" type="text" name="isbn" value="<%= bookInfo.isbn %>"/>
+
+    <label for="description">Description</label>
+    <input class="save" type="text" name="description" value="<%= bookInfo.description %>"/>
+
+    <label for="image_url">Image URL</label>
+    <input class="save" type="text" name="image_url" value="<%= bookInfo.image_url %>"/>
+
+    <label for="bookshelf">Bookshelf</label>
+    <input class="save" type="text" name="bookshelf" value="<%= bookInfo.bookshelf %>"/>
+    <input type="submit" value="Save this Book"/>
+  </form>
 </body>
 </html>
