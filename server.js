@@ -8,6 +8,7 @@ require('dotenv').config();
 //app setup (global variables)
 const PORT = process.env.PORT || 3000;
 const app = express();
+const methodOverride= require('method-override');
 
 // pg
 
@@ -16,6 +17,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
+app.use(methodOverride('_overrideMethod'));
 const client = new pg.Client(process.env.DATABASE_URL);
 client.on('error', console.error);
 client.connect();
@@ -33,6 +35,22 @@ app.get('/', getBooksFromDB);
 app.post('/books', bookToDB);
 
 app.get('/books/:id', bookView);
+
+app.put('/books/:id/update', (req, res) => {
+  console.log('body', req.body);
+  console.log('params', req.params);
+  const sqlUpdate = `UPDATE booktable
+  SET (title, author, isbn, description, image_url, bookshelf) VALUES ($1, $2, $3, $4, $5, $6)
+  WHERE id=$7`;
+  const bookInfo = [req.body.title,req.body.author, req.body.isbn, req.body.description, req.body.image_url, req.body.bookshelf, req.params.id];
+
+  client.query(sqlUpdate, bookInfo)
+    .then(() => res.redirect(`/books/${req.params.id}`))
+    // .catch(error => {
+    //   res.render('pages/error', { 'error': error });
+    //   console.error('error from SQL Update', error);
+    // });
+});
 
 app.get('/pages/error', (req, res) => {
   res.render('pages/error.ejs');
